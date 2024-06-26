@@ -1,10 +1,11 @@
 import { Worker, Job } from "bullmq";
 import { connection, redisGetToken } from "../middlewares/redis.middleware";
-import dotenv from "dotenv";
 import { parseAndSendoutlookMail } from "./controllers/outlook.queue";
 import { parseAndSendMail } from "./controllers/queue.controller";
+import {google} from 'googleapis';
+import nodemailer from 'nodemailer';
 import log from "../logger/log";
-dotenv.config();
+import config from 'config';
 
 interface EmailData {
   from: string;
@@ -34,7 +35,7 @@ const mailWorker = new Worker(
 
     log.info(`Job ${job.id} has started`);
     setTimeout(async () => {
-      await sendEmail(job.data, job.id.toString());
+      await sendEmail(job.data, String(job.id));
     }, 5000);
     log.info("Job in progress");
   },
@@ -60,7 +61,7 @@ const outlookmailWorker = new Worker(
 
     log.info(`Job ${job.id} has started`);
     setTimeout(async () => {
-      await sendoutlookmail(job.data, job.id.toString());
+      await sendoutlookmail(job.data, String(job.id));
     }, 5000);
     log.info("Job in progress");
   },
