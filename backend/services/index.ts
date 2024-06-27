@@ -1,7 +1,7 @@
 import { Worker, Job } from "bullmq";
 import { connection, redisGetToken } from "../middlewares/redis.middleware";
-import { parseAndSendoutlookMail } from "./controllers/outlook.queue";
-import { parseAndSendMail } from "./controllers/queue.controller";
+import { parseAndSendoutlookMail } from "../controllers/outlookQueue";
+import { parseAndSendMail } from "../controllers/queue.controller";
 import {google} from 'googleapis';
 import nodemailer from 'nodemailer';
 import log from "../logger/log";

@@ -325,7 +325,7 @@ const sendMail = async (data: Data, token: string) => {
   };
 
   export {
-    sendEmailToQueue,
+    sendMailViaQueue,
     sendMultipleEmails,
     parseAndSendMail
   };

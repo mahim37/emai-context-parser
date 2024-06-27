@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import express, { Request, Response } from "express";
 import  config from "config";
-import { createConfig } from "../helpers/utils";
+import { createConfig } from "../utils/index";
 import { OAuth2Client } from "google-auth-library";
 import { connection } from "../middlewares/redis.middleware";
 import OpenAI from "openai";
@@ -51,7 +51,7 @@ googleRouter.get(
       const { tokens } = await oAuth2Client.getToken(code as string);
       const { access_token, refresh_token, scope } = tokens;
 
-      accessToken = access_token;
+      accessToken = access_token!;
 
       if (scope?.includes(scopes.join(" "))) {
         res.send("Restricted scopes test passed.");
@@ -73,7 +73,7 @@ const getUser = async (req: Request, res: Response) => {
   try {
     const url = `https://gmail.googleapis.com/gmail/v1/users/${req.params.email}/profile`;
 
-    const token = accessToken;
+    const token = accessToken!;
     connection.setex(req.params.email, 3600, token);
 
     if (!token) {

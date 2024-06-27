@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { getDrafts, readMail, getMails, createLabel, getLabel } from "../controllers/msg.Controller";
+import { getDrafts, readMail, getMails, createLabel, getLabel } from "../controllers/message.controller";
 import { sendMailViaQueue, sendMultipleEmails } from "../controllers/queue.controller";
 import { redisGetToken } from "../middlewares/redis.middleware";
 import { sendMail, getUser } from "./authGoogle";
@@ -18,7 +18,7 @@ const asyncHandler = (fn: Function) => (req: Request, res: Response, next: NextF
 router.get("/userInfo/:email", asyncHandler(getUser));
 
 router.post("/sendMail/:email", asyncHandler(async (req: Request, res: Response) => {
-  const token = await redisGetToken(req.params.email);
+  const token = await redisGetToken(req.params.email) || "";
   const result = await sendMail(req.body, token);
   res.status(200).json({ message: "Email sent successfully", result });
 }));
